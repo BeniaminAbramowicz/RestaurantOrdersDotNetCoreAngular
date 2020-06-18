@@ -7,7 +7,7 @@ namespace RestaurantOrdersAPI.Data
     public interface IAuthRepository
     {
          void Register(User user, string password);
-         void Login(UserForLoginDto userForLoginDto);
+         Task<User> Login(UserForLoginDto userForLoginDto);
          Task<bool> UserExists(string username);
     }
 }

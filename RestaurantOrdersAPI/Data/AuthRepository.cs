@@ -5,6 +5,7 @@ using RestaurantOrdersAPI.DTOs;
 using System.Data.SqlClient;
 using Dapper;
 using RestaurantOrdersAPI.Models;
+using System;
 
 namespace RestaurantOrdersAPI.Data
 {
@@ -17,12 +18,39 @@ namespace RestaurantOrdersAPI.Data
             _config = config;
         }
         
-        public async void Login(UserForLoginDto userForLoginDto)
+        public async Task<User> Login(UserForLoginDto userForLoginDto)
         {
             using(var connection = new SqlConnection(_config.GetConnectionString("RestaurantAPI")))
             {
+                var user = await connection.QueryFirstOrDefaultAsync<User>("SELECT username FROM Users WHERE username = @Username", new {Username = userForLoginDto.Username});
 
+                if(user == null)
+                {
+                    return null;
+                }
+
+                if(!VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
+                {
+                    return null;
+                }
+                return user;
             }
+        }
+
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using(var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for(int i = 0; i < computedHash.Length; i++)
+                {
+                    if(computedHash[i] != passwordHash[i])
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         public async void Register(User user, string password)
