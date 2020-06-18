@@ -5,7 +5,7 @@ namespace RestaurantOrdersAPI.DTOs
     public class UserForRegisterDto
     {
         [Required]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [Required]
         public string Name { get; set; }
