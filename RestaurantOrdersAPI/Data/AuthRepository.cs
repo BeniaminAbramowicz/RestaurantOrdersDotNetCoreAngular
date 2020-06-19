@@ -1,11 +1,9 @@
 using System.Threading.Tasks;
-using System.Security.Cryptography;
 using Microsoft.Extensions.Configuration;
 using RestaurantOrdersAPI.DTOs;
 using System.Data.SqlClient;
 using Dapper;
 using RestaurantOrdersAPI.Models;
-using System;
 
 namespace RestaurantOrdersAPI.Data
 {
@@ -22,7 +20,7 @@ namespace RestaurantOrdersAPI.Data
         {
             using(var connection = new SqlConnection(_config.GetConnectionString("RestaurantAPI")))
             {
-                var user = await connection.QueryFirstOrDefaultAsync<User>("SELECT username FROM Users WHERE username = @Username", new {Username = userForLoginDto.Username});
+                var user = await connection.QueryFirstOrDefaultAsync<User>("SELECT * FROM Users WHERE username = @Username", new {Username = userForLoginDto.Username});
 
                 if(user == null)
                 {
@@ -39,7 +37,7 @@ namespace RestaurantOrdersAPI.Data
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using(var hmac = new HMACSHA512(passwordSalt))
+            using(var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 for(int i = 0; i < computedHash.Length; i++)
@@ -69,7 +67,7 @@ namespace RestaurantOrdersAPI.Data
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            using(var hmac = new HMACSHA512())
+            using(var hmac = new System.Security.Cryptography.HMACSHA512())
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
