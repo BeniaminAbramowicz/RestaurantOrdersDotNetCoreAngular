@@ -1,6 +1,6 @@
 namespace RestaurantOrdersAPI.Models
 {
-    public class OrderItem
+    public class OrderItem : IRestaurantObject
     {
         public int Id { get; set; }
         public Meal Meal { get; set; }

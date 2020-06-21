@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace RestaurantOrdersAPI.Data
 {
-    public interface IRestaurantRepository
+    public interface IRestaurantRepository<T>
     {
-         Task<T> Add<T>(T entity) where T: class;
-         void Delete<T>(T entity) where T: class;
-         Task<IEnumerable<T>> GetAll<T>() where T: class;
-         Task<T> GetFirstOrDefault<T>(int id) where T: class;
+         Task<T> Add(T entity);
+         void Delete(int id);
+         Task<IEnumerable<T>> GetAll();
+         Task<T> GetFirstOrDefault(int id);
     }
 }

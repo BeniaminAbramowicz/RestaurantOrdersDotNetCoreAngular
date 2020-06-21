@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using RestaurantOrdersAPI.Data;
+using RestaurantOrdersAPI.Models;
 
 namespace RestaurantOrdersAPI
 {
@@ -33,6 +34,9 @@ namespace RestaurantOrdersAPI
             services.AddControllers();
             services.AddAutoMapper(typeof(AuthRepository).Assembly);
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IRestaurantRepository<Meal>, MealRepository>();
+            services.AddScoped<IRestaurantRepository<Table>, TableRepository>();
+            services.AddScoped<IRestaurantRepository<Order>, OrderRepository>(); 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters

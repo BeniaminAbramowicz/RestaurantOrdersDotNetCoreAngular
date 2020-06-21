@@ -5,6 +5,7 @@ using RestaurantOrdersAPI.DTOs;
 using System.Data.SqlClient;
 using Dapper;
 using RestaurantOrdersAPI.Models;
+using RestaurantOrdersAPI.Data.DataHelpers;
 
 namespace RestaurantOrdersAPI.Data
 {
@@ -21,7 +22,7 @@ namespace RestaurantOrdersAPI.Data
         {
             using(var connection = new SqlConnection(_config.GetConnectionString("RestaurantAPI")))
             {
-                var user = await connection.QueryFirstOrDefaultAsync<User>("SELECT * FROM Users WHERE username = @Username", new {Username = userForLoginDto.Username});
+                var user = await connection.QueryFirstOrDefaultAsync<User>(SqlQueriesFactory.GetUser(), new {Username = userForLoginDto.Username});
 
                 if(user == null)
                 {
@@ -32,6 +33,7 @@ namespace RestaurantOrdersAPI.Data
                 {
                     return null;
                 }
+
                 return user;
             }
         }
@@ -49,6 +51,7 @@ namespace RestaurantOrdersAPI.Data
                     }
                 }
             }
+            
             return true;
         }
 
@@ -60,9 +63,9 @@ namespace RestaurantOrdersAPI.Data
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-            using(var connection = new SqlConnection(_config.GetConnectionString("RestaurantAPI")))
+            using(var connection = new SqlConnection (_config.GetConnectionString("RestaurantAPI")))
             {
-                await connection.ExecuteAsync("INSERT INTO Users (username, name, surname, is_active, password_hash, password_salt) VALUES (@Username, @Name, @Surname, @IsActive, @PasswordHash, @PasswordSalt)", user);
+                await connection.ExecuteAsync(SqlQueriesFactory.AddUser(), user);
             }
         }
 
@@ -79,7 +82,7 @@ namespace RestaurantOrdersAPI.Data
         {
             using(var connection = new SqlConnection(_config.GetConnectionString("RestaurantAPI")))
             {
-                if(await connection.QueryFirstOrDefaultAsync<User>("SELECT username FROM Users WHERE username = @Username", new {Username = username}) == null)
+                if(await connection.QueryFirstOrDefaultAsync<User>(SqlQueriesFactory.GetUser(), new {Username = username}) == null)
                 {
                     return false;
                 } else

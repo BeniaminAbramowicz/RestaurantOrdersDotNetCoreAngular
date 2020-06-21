@@ -9,20 +9,20 @@ namespace RestaurantOrdersAPI.Data.DataHelpers
 
         public static string AddMeal()
         {
-            return "INSERT INTO Meals(name, unitprice) VALUES (@Name, @UnitPrice)";
+            return "INSERT INTO Meals(name, unitprice) OUTPUT INSERTED.* VALUES (@Name, @UnitPrice)";
         }
 
         public static string AddTable()
         {
-            return "INSERT INTO Tables(name) VALUES (@Name)";
+            return "INSERT INTO Tables(name) OUTPUT INSERTED.* VALUES (@Name)";
         }
 
         public static string AddOrder()
         {
-            return "INSERT INTO Tables(name) VALUES (@Name)";
+            return "INSERT INTO Orders(totalprice, status, tableid) VALUES (@TotalPrice, @Status, @Table.Id)";
         }
 
-        public static string AddOrderItems()
+        public static string AddOrderItem()
         {
             return "INSERT INTO OrderItems(price, quantity, mealid, orderid) VALUES (@Price, @Quantity, @MealId, @OrderId)";
         }
@@ -44,10 +44,10 @@ namespace RestaurantOrdersAPI.Data.DataHelpers
 
         public static string DeleteOrder()
         {
-            return "DELETE FROM Orders WHERE id = @Id";
+            return "DELETE FROM Orders WHERE id = @Id DELETE FROM OrderItems WHERE orderid = @Id";
         }
 
-        public static string DeleteOrderItems()
+        public static string DeleteOrderItem()
         {
             return "DELETE FROM OrderItems WHERE id = @Id";
         }
@@ -69,7 +69,32 @@ namespace RestaurantOrdersAPI.Data.DataHelpers
 
         public static string GetAllOrders()
         {
-            return "SELECT * FROM Orders";
+            return "SELECT * FROM Orders o INNER JOIN Tables t ON o.tableid = t.id INNER JOIN OrderItems i ON o.id = i.orderitemid INNER JOIN Meals m ON m.id = i.mealid";
+        }
+
+        public static string GetUser()
+        {
+            return "SELECT * FROM Users WHERE username = @Username";
+        }
+
+        public static string GetMeal()
+        {
+            return "SELECT * FROM Meals WHERE id = @Id";
+        }
+
+        public static string GetTable()
+        {
+            return "SELECT * FROM Tables WHERE id = @Id";
+        }
+
+        public static string GetOrder()
+        {
+            return "SELECT * FROM Orders WHERE id = @Id";
+        }
+
+        public static string GetOrderItem()
+        {
+            return "SELECT * FROM OrderItems WHERE id = @Id";
         }
     }
 }
