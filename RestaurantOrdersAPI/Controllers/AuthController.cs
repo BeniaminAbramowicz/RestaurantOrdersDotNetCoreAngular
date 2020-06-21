@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using RestaurantOrdersAPI.Data;
 using RestaurantOrdersAPI.DTOs;
 using RestaurantOrdersAPI.Models;
+using RestaurantOrdersAPI.Models.Enums;
 
 namespace RestaurantOrdersAPI.Controllers
 {
@@ -40,6 +41,7 @@ namespace RestaurantOrdersAPI.Controllers
                 Username = userForRegisterDto.Username,
                 Name = userForRegisterDto.Name,
                 Surname = userForRegisterDto.Surname,
+                Role = Role.Admin,
                 IsActive = true
             };
 
@@ -61,7 +63,8 @@ namespace RestaurantOrdersAPI.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name, userFromRepo.Username)
+                new Claim(ClaimTypes.Name, userFromRepo.Username),
+                new Claim(ClaimTypes.Role, userFromRepo.Role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));

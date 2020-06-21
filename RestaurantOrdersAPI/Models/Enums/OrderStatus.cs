@@ -1,4 +1,4 @@
-namespace RestaurantOrdersAPI.Models
+namespace RestaurantOrdersAPI.Models.Enums
 {
     public enum OrderStatus
     {

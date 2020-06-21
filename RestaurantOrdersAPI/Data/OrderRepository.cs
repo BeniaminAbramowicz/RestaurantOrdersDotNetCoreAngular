@@ -33,26 +33,28 @@ namespace RestaurantOrdersAPI.Data
 
         public async Task<IEnumerable<Order>> GetAll()
         {
-            IEnumerable<Order> ordersList;
+            // IEnumerable<Order> ordersList;
 
-            using (var connection = new SqlConnection(_config.GetConnectionString("RestaurantAPI")))
-            {
-                ordersList = await connection.QueryAsync<Order>(SqlQueriesFactory.GetAllOrders());
-            }
+            // using (var connection = new SqlConnection(_config.GetConnectionString("RestaurantAPI")))
+            // {
+            //     ordersList = await connection.QueryAsync<Order>(SqlQueriesFactory.GetAllOrders());
+            // }
 
-            return ordersList;
+            // return ordersList;
+            throw new System.NotImplementedException();
         }
 
         public async Task<Order> GetFirstOrDefault(int id)
         {
-            Order order;
+            // Order order;
 
-            using (var connection = new SqlConnection(_config.GetConnectionString("RestaurantAPI")))
-            {
-                order = await connection.QueryFirstOrDefaultAsync<Order>(SqlQueriesFactory.GetOrder(), new { Id = id });
-            }
+            // using (var connection = new SqlConnection(_config.GetConnectionString("RestaurantAPI")))
+            // {
+            //     order = await connection.QueryFirstOrDefaultAsync<Order>(SqlQueriesFactory.GetOrder(), new { Id = id });
+            // }
 
-            return order;
+            // return order;
+            throw new System.NotImplementedException();
         }
 
         public async void DeleteOrderItem(int id)

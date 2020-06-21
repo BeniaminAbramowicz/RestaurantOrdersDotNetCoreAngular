@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using RestaurantOrdersAPI.Data;
 using RestaurantOrdersAPI.Models;
+using RestaurantOrdersAPI.Models.Enums;
 using System.Threading.Tasks;
 
 namespace RestaurantOrdersAPI.Controllers
@@ -30,6 +32,7 @@ namespace RestaurantOrdersAPI.Controllers
             return Ok(mealsList);
         } 
 
+        [Authorize(Roles = Role.Admin)]
         [HttpGet("tables")]
         public async Task<IActionResult> GetTables()
         {

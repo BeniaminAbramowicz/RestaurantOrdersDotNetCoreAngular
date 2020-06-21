@@ -4,7 +4,7 @@ namespace RestaurantOrdersAPI.Data.DataHelpers
     {
         public static string AddUser()
         {
-            return "INSERT INTO Users (username, name, surname, is_active, password_hash, password_salt) VALUES (@Username, @Name, @Surname, @IsActive, @PasswordHash, @PasswordSalt)";
+            return "INSERT INTO Users (username, name, surname, role, isactive, passwordhash, passwordsalt) VALUES (@Username, @Name, @Surname, @Role, @IsActive, @PasswordHash, @PasswordSalt)";
         }
 
         public static string AddMeal()
