@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantOrdersAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantController : ControllerBase
@@ -32,7 +33,6 @@ namespace RestaurantOrdersAPI.Controllers
             return Ok(mealsList);
         } 
 
-        [Authorize(Roles = Role.Admin)]
         [HttpGet("tables")]
         public async Task<IActionResult> GetTables()
         {

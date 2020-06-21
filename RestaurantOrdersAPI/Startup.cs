@@ -37,6 +37,7 @@ namespace RestaurantOrdersAPI
             services.AddScoped<IRestaurantRepository<Meal>, MealRepository>();
             services.AddScoped<IRestaurantRepository<Table>, TableRepository>();
             services.AddScoped<IRestaurantRepository<Order>, OrderRepository>(); 
+            services.AddCors();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -58,6 +59,8 @@ namespace RestaurantOrdersAPI
             }
 
             app.UseRouting();
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseAuthentication();
             app.UseAuthorization();

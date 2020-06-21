@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -26,6 +27,7 @@ namespace RestaurantOrdersAPI.Controllers
             _repo = repo;
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser(UserForRegisterDto userForRegisterDto)
         {
@@ -41,7 +43,7 @@ namespace RestaurantOrdersAPI.Controllers
                 Username = userForRegisterDto.Username,
                 Name = userForRegisterDto.Name,
                 Surname = userForRegisterDto.Surname,
-                Role = Role.Admin,
+                Role = userForRegisterDto.Role,
                 IsActive = true
             };
 
