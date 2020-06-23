@@ -43,8 +43,7 @@ namespace RestaurantOrdersAPI.Controllers
                 Username = userForRegisterDto.Username,
                 Name = userForRegisterDto.Name,
                 Surname = userForRegisterDto.Surname,
-                Role = userForRegisterDto.Role,
-                IsActive = true
+                Role = userForRegisterDto.Role
             };
 
             await Task.Run(() => _repo.Register(userToCreate, userForRegisterDto.Password));
@@ -52,6 +51,7 @@ namespace RestaurantOrdersAPI.Controllers
             return StatusCode(201, "Registration successfull");
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {

@@ -11,6 +11,9 @@ import { appRoutes } from './routes';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from './register/register.component';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { getToken } from './utilities/getToken';
 
 
 
@@ -19,14 +22,22 @@ import { ReactiveFormsModule } from '@angular/forms';
       AppComponent,
       NavComponent,
       HomeComponent,
-      LoginComponent
+      LoginComponent,
+      RegisterComponent
    ],
    imports: [
       BrowserModule,
       FontAwesomeModule,
       HttpClientModule,
       ReactiveFormsModule,
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),,
+      JwtModule.forRoot({
+         config: {
+            tokenGetter: getToken,
+            whitelistedDomains: ['localhost:5000', 'localhost:5000/api/auth/register'],
+            blacklistedRoutes: ['localhost:5000/api/auth']
+         }
+      })
    ],
    providers: [
       AuthService

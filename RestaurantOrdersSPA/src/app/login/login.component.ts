@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../_services/auth.service';
+
 
 
 @Component({
@@ -10,27 +13,28 @@ import { AuthService } from '../_services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  model: any;
   loginForm: FormGroup;
+  jwtHelper = new JwtHelperService();
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit() {
     this.createLoginForm();
   }
 
   createLoginForm(){
-    this.loginForm = this.fb.group({
+    this.loginForm = this.formBuilder.group({
       username: [''],
       password: ['']
     });
   }
 
   login(){
-    this.authService.login(this.model).subscribe(() => {
+    this.authService.login(this.loginForm.value).subscribe(() => {
       alert("You have been logged in");
+      this.router.navigate(['/home']);
     }, error => {
-      alert(error);
+      alert(error.status);
     });
   }
 

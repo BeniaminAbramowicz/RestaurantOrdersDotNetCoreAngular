@@ -24,7 +24,7 @@ namespace RestaurantOrdersAPI.Data.DataHelpers
 
         public static string AddOrderItem()
         {
-            return "INSERT INTO OrderItems(price, quantity, mealid, orderid) VALUES (@Price, @Quantity, @MealId, @OrderId)";
+            return "INSERT INTO OrderItems(price, quantity, mealid, orderid) OUTPUT INSERTED.* VALUES (@Price, @Quantity, @MealId, @OrderId)";
         }
 
         public static string DeleteUser()
