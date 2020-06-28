@@ -4,6 +4,9 @@
       <form [formGroup]="registerForm" (ngSubmit)="register()">
         <div class="form-group">
           <input type="text" class="form-control" formControlName="username" placeholder="Username" />
+          <div class="invalid-feedback" *ngIf="this.registerForm.get('username').hasError('required')">
+            Username required
+          </div>
         </div>
         <div class="form-group">
           <input type="text" class="form-control" formControlName="name" placeholder="Name" />
@@ -12,7 +15,22 @@
           <input type="text" class="form-control" formControlName="surname" placeholder="Surname" />
         </div>
         <div class="form-group">
-          <input type="password" class="form-control" formControlName="password" placeholder="Password" />
+          <input type="password" class="form-control" formControlName="password" placeholder="Password" [ngClass]="invalidPasswordField()"/>
+          <div class="invalid-feedback" *ngIf="hasError('required')">
+            Password required
+          </div>
+          <div class="invalid-feedback" *ngIf="hasError('minlength')">
+            Password must have from 8 to 20 characters
+          </div>
+          <div class="invalid-feedback" *ngIf="hasError('pattern')">
+            Password must contain small letters, capital letters, numbers, special characters except for language characters and ! @ ;
+          </div>
+          <div class="invalid-feedback" *ngIf="hasError('')">
+            Password cannot contain username
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Confirm password" />
         </div>
         <div class="form-group">
           <select class="form-control" formControlName="role">
@@ -28,3 +46,4 @@
     </div>
   </div>
 </div>
+<p>{{registerForm.status}}</p>
