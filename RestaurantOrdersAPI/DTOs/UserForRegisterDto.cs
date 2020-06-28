@@ -15,6 +15,7 @@ namespace RestaurantOrdersAPI.DTOs
         
         [Required]
         [StringLength(20, MinimumLength = 8, ErrorMessage = "Password must contain between 8 and 20 characters")]
+        [RegularExpression(@"")]
         public string Password { get; set; }
 
         [Required]
